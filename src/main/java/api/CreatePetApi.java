@@ -1,13 +1,9 @@
 package api;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
 
 import dto.CreatePet.CreatePetBodyRequest;
-import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.ValidatableResponse;
-import org.apache.http.HttpStatus;
-import java.util.HashMap;
 
 public class CreatePetApi extends BaseApi {
   private CreatePetBodyRequest body;
@@ -20,26 +16,32 @@ public class CreatePetApi extends BaseApi {
   public ValidatableResponse makeRequest(Method method) {
     switch (method) {
       case POST:
-        return makePostRequest(body);
+        if(body!=null) {
+          return makePostRequest(body);
+        }
+        else if(body==null) {
+          return makeNoBodyPostRequest();
+        }
       default:
         return null;
     }
   }
 
-  @Override
-  public void validateResponse(ValidatableResponse response, HashMap<String,String> params) {
-    response.statusCode(HttpStatus.SC_OK)
-        //.time(lessThan(1000L))
-        .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schema/CreateUser.json"))
-        .body("type", equalTo("unknown"))
-        .body("code", equalTo(200))
-        .body("message", equalTo("408"));
-  }
 
   private ValidatableResponse makePostRequest(CreatePetBodyRequest body) {
     return given(spec)
                .basePath("/pet")
                .body(body)
+               .log().all()
+               .when()
+               .post()
+               .then()
+               .log().all();
+  }
+
+  private ValidatableResponse makeNoBodyPostRequest() {
+    return given(spec)
+               .basePath("/pet")
                .log().all()
                .when()
                .post()
