@@ -27,9 +27,8 @@ public class CreateNewPetTest {
     pipeline.setRequestType(Method.POST);
   }
 
-  //Создание карточки питомца в магазине с разными наборами полей
   @Test
-  @DisplayName("Создание карточки питомца в магазине с разными наборами полей")
+  @DisplayName("Создание карточки питомца в магазине")
   void createUser() {
     PetBodyRequest body = PetBodyRequest.builder()
                                     .id(89219886273L)
