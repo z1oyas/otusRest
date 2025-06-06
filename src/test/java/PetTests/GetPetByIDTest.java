@@ -1,4 +1,4 @@
-package pet;
+package PetTests;
 
 import api.BaseApi;
 import api.GetPetApi;
@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import template.IRequestPipeline;
 import template.RequestPipeline;
 
+@org.junit.jupiter.api.Tag("PetShopTests")
+@org.junit.jupiter.api.Tag("GetPetByID")
 public class GetPetByIDTest {
   IRequestPipeline pipeline;
   GetPetApi getPetApi;
@@ -24,23 +26,25 @@ public class GetPetByIDTest {
   void getPetByID() {
     pipeline
         .setApi(getPetApi)
-        .setPath("/89219886273")
+        .setPath("/8")
         .hasRequestBody(false)
-        .needValidation(true)
+        .shouldValidate(true)
         .setStatusCode(200)
+        .setExpectedHeaders("access-control-allow-methods", "GET, POST, DELETE, PUT")
         .setResponseBodySchemaPath("PetSchema.json")
-        .run();
+        .execute();
   }
   @Test
   @DisplayName("Запрос к магазину c несуществующим id питомца")
   void getPetByNoNExistingID() {
     pipeline
         .setApi(getPetApi)
+        .setRequestHeaders("api_key", "special-key")
         .setPath("/892198862731")
         .hasRequestBody(false)
-        .needValidation(true)
+        .shouldValidate(true)
         .setStatusCode(404)
-        .run();
+        .execute();
   }
 
   @Test
@@ -50,9 +54,9 @@ public class GetPetByIDTest {
         .setApi(getPetApi)
         .setPath("/testId")
         .hasRequestBody(false)
-        .needValidation(true)
+        .shouldValidate(true)
         .setStatusCode(404)
-        .setFieldForValidation("message", "java.lang.NumberFormatException: For input string: \"testId\"")
-        .run();
+        .SetExpectedFields("message", "java.lang.NumberFormatException: For input string: \"testId\"")
+        .execute();
   }
 }

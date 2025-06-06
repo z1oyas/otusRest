@@ -7,30 +7,32 @@ import io.restassured.response.ValidatableResponse;
 
 public class CreatePetApi extends BaseApi {
 
+
   public CreatePetApi() {
     super();
   }
 
   @Override
-  public ValidatableResponse makeRequest(Method method, String path) {
+  public ValidatableResponse makeRequest(Method method) {
     switch (method) {
       case POST:
         if(bodyRequest!=null) {
-          return makePostRequest(bodyRequest, path);
+          return makePostRequest(bodyRequest);
         }
         else if(bodyRequest==null) {
-          return makeNoBodyPostRequest(path);
+          return makeNoBodyPostRequest();
         }
-      case GET: return makeGetRequest(path);
+      case GET: return makeGetRequest();
       default:
-        return null;
+        throw new UnsupportedOperationException("Method not supported: " + method);
     }
   }
 
 
-  private ValidatableResponse makePostRequest(ABodyRequest body, String path) {
+  private ValidatableResponse makePostRequest(ABodyRequest body) {
     return given(spec)
                .basePath("/pet"+path)
+               .headers(safeHeaders())
                .body(body)
                .log().all()
                .when()
@@ -39,9 +41,10 @@ public class CreatePetApi extends BaseApi {
                .log().all();
   }
 
-  private ValidatableResponse makeNoBodyPostRequest(String path) {
+  private ValidatableResponse makeNoBodyPostRequest() {
     return given(spec)
                .basePath("/pet"+path)
+               .headers(safeHeaders())
                .log().all()
                .when()
                .post()
@@ -49,9 +52,10 @@ public class CreatePetApi extends BaseApi {
                .log().all();
   }
 
-  private ValidatableResponse makeGetRequest(String path) {
+  private ValidatableResponse makeGetRequest() {
     return given(spec)
                .basePath("/pet"+path)
+               .headers(safeHeaders())
                .log().all()
                .when()
                .get()

@@ -1,4 +1,4 @@
-package pet;
+package PetTests;
 
 import api.CreatePetApi;
 import dto.CreatePet.PetBodyRequest;
@@ -12,6 +12,8 @@ import template.IRequestPipeline;
 import template.RequestPipeline;
 import java.util.List;
 
+@org.junit.jupiter.api.Tag("PetShopTests")
+@org.junit.jupiter.api.Tag("CreateNewPet")
 public class CreateNewPetTest {
   IRequestPipeline pipeline;
   CreatePetApi createPetApi;
@@ -46,10 +48,10 @@ public class CreateNewPetTest {
     pipeline
         .hasRequestBody(true)
         .setRequestBody(body)
-        .needValidation(true)
+        .shouldValidate(true)
         .setStatusCode(200)
         .setResponseBodySchemaPath("PetSchema.json")
-        .run();
+        .execute();
   }
 
   @Test
@@ -57,11 +59,11 @@ public class CreateNewPetTest {
   void createUserInvalid() {
     pipeline
         .hasRequestBody(false)
-        .needValidation(true)
-        .setFieldForValidation("message", "no data")
-        .setFieldForValidation("type", "unknown")
+        .shouldValidate(true)
+        .SetExpectedFields("message", "no data")
+        .SetExpectedFields("type", "unknown")
         .setStatusCode(405)
-        .run();
+        .execute();
   }
 
   @Test
@@ -71,9 +73,9 @@ public class CreateNewPetTest {
     .setApi(createPetApi)
     .hasRequestBody(false)
     .setRequestType(Method.GET)
-    .needValidation(true)
+    .shouldValidate(true)
     .setStatusCode(405)
-    .run();
+    .execute();
   }
 }
 

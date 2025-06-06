@@ -3,11 +3,10 @@ package template;
 import api.BaseApi;
 import api.BaseApi.Method;
 import dto.ABodyRequest;
-import java.util.Map;
 
 public interface IRequestPipeline {
 
-   void run();
+   void execute();
 
    IRequestPipeline setPath(String path);
 
@@ -17,18 +16,18 @@ public interface IRequestPipeline {
 
    IRequestPipeline hasRequestBody(boolean hasBody);
 
-   IRequestPipeline setRequestHeaders(Map<String, String> headers);
+   IRequestPipeline setRequestHeaders(String header , String value);
 
-   IRequestPipeline setFieldForValidation(String field, String value);
+   IRequestPipeline SetExpectedFields(String field, String value);
 
    IRequestPipeline setStatusCode(Integer code);
 
-   IRequestPipeline setResponseHeaders(Map<String, String> headers);
+   IRequestPipeline setExpectedHeaders(String header , String value);
 
    IRequestPipeline setResponseBodySchemaPath(String schemaPath);
 
-  IRequestPipeline setApi(BaseApi api);
+   IRequestPipeline setApi(BaseApi api);
 
-   IRequestPipeline needValidation(boolean needValidation);
+   IRequestPipeline shouldValidate(boolean shouldValidate);
 
 }

@@ -11,16 +11,18 @@ public class GetPetApi extends BaseApi {
   }
 
   @Override
-  public ValidatableResponse makeRequest(Method method, String path) {
+  public ValidatableResponse makeRequest(Method method) {
     switch (method) {
-      case GET: return makeGetRequest(path);
+      case GET: return makeGetRequest();
       default:
-        return null;
+        throw new UnsupportedOperationException("Method not supported: " + method);
     }
   }
-  private ValidatableResponse makeGetRequest(String path) {
+  private ValidatableResponse makeGetRequest() {
+
     return given(spec)
                .basePath("/pet"+path)
+               .headers(safeHeaders())
                .log().all()
                .when()
                .get()

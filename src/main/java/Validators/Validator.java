@@ -58,7 +58,7 @@ public class Validator {
     private String schemaPath;
     private ValidatableResponse response;
     private Integer code;
-    private Map<String,String> headers;
+    private Map<String,String> headers = new HashMap<>();
     private Map<String,String> fieldValue = new HashMap<>();
 
     public ValidationParams() {
@@ -85,7 +85,7 @@ public class Validator {
     }
 
     public ValidationParams setSchemaPath(String schemaPath) {
-      if(schemaPath.equals("")){
+      if(schemaPath.isEmpty()){
         return this;
       }
       else {

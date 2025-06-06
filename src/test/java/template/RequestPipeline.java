@@ -9,51 +9,52 @@ import java.util.Map;
 
 public class RequestPipeline implements IRequestPipeline {
   private String path;
-  private boolean needValidation;
+  private boolean shouldValidate;
   private BaseApi api;
   private BaseApi.Method method;
   private ABodyRequest body;
   private Map<String, String> headers;
+  private Map<String, String> responseHeaders;
   private boolean hasBody;
   boolean validate;
-  private Map<String, String> ValidationFieldValue;
+  private Map<String, String> expectedFields;
 
   private Integer code;
-  private Map<String, String> responseHeaders;
   private String schemaPath;
 
   public RequestPipeline() {
     path = "";
-    this.ValidationFieldValue =new HashMap<>();
-    needValidation = false;
+    this.expectedFields =new HashMap<>();
+    shouldValidate = false;
     this.api = null;
     this.method = BaseApi.Method.GET;
     this.body = null;
-    this.headers = null;
+    this.headers = new HashMap<>();
+    this.responseHeaders = new HashMap<>();
     this.hasBody = false;
     this.validate = false;
 
     this.code = 200;
-    this.responseHeaders = null;
+
     this.schemaPath ="";
   }
 
   @Override
-  public void run() {
+  public void execute() {
+    this.api.setPath(this.path)
+        .setHeaders(this.headers);
     if(hasBody){
       this.api.setBody(this.body);
     }
-    else if(!hasBody) {
-    }
 
-    ValidatableResponse response = this.api.makeRequest(method, path);
+    ValidatableResponse response = this.api.makeRequest(method);
 
-    if(needValidation) {
+    if(shouldValidate) {
       Validator validator = new Validator.ValidationParams()
                                 .setResponse(response) //ответ от сервера
                                 .setExpectedStatusCode(code) // ожидаемый статус код
-                                .setFieldValue(ValidationFieldValue)
-                                .setSchemaPath(schemaPath)
+                                .setFieldValue(expectedFields) // ожидаемые поля
+                                .setSchemaPath(schemaPath) // путь к схеме ответа
                                 .setExpectedHeaders(responseHeaders)//ожидаемые значение полей
                                 .bulid();
       validator.validate();
@@ -86,17 +87,15 @@ public class RequestPipeline implements IRequestPipeline {
   }
 
   @Override
-  public RequestPipeline setRequestHeaders(Map<String, String> headers) {
-    this.headers = headers;
+  public RequestPipeline setRequestHeaders(String header, String value) {
+    this.headers.put(header, value);
     return this;
   }
 
 
   @Override
-  public RequestPipeline setFieldForValidation(String field, String value) {
-    this.ValidationFieldValue.put(field, value);
-//    this.ValidationField = field;
-//    this.ValidationValue = value;
+  public RequestPipeline SetExpectedFields(String field, String value) {
+    this.expectedFields.put(field, value);
     return this;
   }
 
@@ -107,8 +106,8 @@ public class RequestPipeline implements IRequestPipeline {
   }
 
   @Override
-  public RequestPipeline setResponseHeaders(Map<String, String> headers) {
-    this.responseHeaders = headers;
+  public RequestPipeline setExpectedHeaders(String header , String value) {
+    this.responseHeaders.put(header, value);
     return this;
   }
 
@@ -125,8 +124,8 @@ public class RequestPipeline implements IRequestPipeline {
   }
 
   @Override
-  public IRequestPipeline needValidation(boolean needValidation) {
-    this.needValidation = needValidation;
+  public IRequestPipeline shouldValidate(boolean shouldValidate) {
+    this.shouldValidate = shouldValidate;
     return this;
   }
 }
