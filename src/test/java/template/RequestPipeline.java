@@ -40,7 +40,6 @@ public class RequestPipeline implements IRequestPipeline {
 
   @Override
   public void run() {
-    //todo
     if(hasBody){
       this.api.setBody(this.body);
     }
