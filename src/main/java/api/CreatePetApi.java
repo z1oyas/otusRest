@@ -2,35 +2,35 @@ package api;
 
 import static io.restassured.RestAssured.given;
 
-import dto.CreatePet.CreatePetBodyRequest;
+import dto.ABodyRequest;
 import io.restassured.response.ValidatableResponse;
 
 public class CreatePetApi extends BaseApi {
-  private CreatePetBodyRequest body;
 
-  public CreatePetApi(CreatePetBodyRequest body) {
-    this.body = body;
+  public CreatePetApi() {
+    super();
   }
 
   @Override
-  public ValidatableResponse makeRequest(Method method) {
+  public ValidatableResponse makeRequest(Method method, String path) {
     switch (method) {
       case POST:
-        if(body!=null) {
-          return makePostRequest(body);
+        if(bodyRequest!=null) {
+          return makePostRequest(bodyRequest, path);
         }
-        else if(body==null) {
-          return makeNoBodyPostRequest();
+        else if(bodyRequest==null) {
+          return makeNoBodyPostRequest(path);
         }
+      case GET: return makeGetRequest(path);
       default:
         return null;
     }
   }
 
 
-  private ValidatableResponse makePostRequest(CreatePetBodyRequest body) {
+  private ValidatableResponse makePostRequest(ABodyRequest body, String path) {
     return given(spec)
-               .basePath("/pet")
+               .basePath("/pet"+path)
                .body(body)
                .log().all()
                .when()
@@ -39,12 +39,22 @@ public class CreatePetApi extends BaseApi {
                .log().all();
   }
 
-  private ValidatableResponse makeNoBodyPostRequest() {
+  private ValidatableResponse makeNoBodyPostRequest(String path) {
     return given(spec)
-               .basePath("/pet")
+               .basePath("/pet"+path)
                .log().all()
                .when()
                .post()
+               .then()
+               .log().all();
+  }
+
+  private ValidatableResponse makeGetRequest(String path) {
+    return given(spec)
+               .basePath("/pet"+path)
+               .log().all()
+               .when()
+               .get()
                .then()
                .log().all();
   }

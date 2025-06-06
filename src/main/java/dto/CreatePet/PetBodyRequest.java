@@ -2,6 +2,7 @@
 package dto.CreatePet;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import dto.ABodyRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class CreatePetBodyRequest {
+public class PetBodyRequest extends ABodyRequest {
 
     private Category category;
     private Long id;

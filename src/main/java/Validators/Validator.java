@@ -64,8 +64,8 @@ public class Validator {
     public ValidationParams() {
     }
 
-    public ValidationParams setFieldValue(String field, String value) {
-      this.fieldValue.put(field, value);
+    public ValidationParams setFieldValue(Map<String, String> fieldValue) {
+      this.fieldValue = fieldValue;
       return this;
     }
 
@@ -85,7 +85,12 @@ public class Validator {
     }
 
     public ValidationParams setSchemaPath(String schemaPath) {
-      this.schemaPath = "schema/"+schemaPath;
+      if(schemaPath.equals("")){
+        return this;
+      }
+      else {
+        this.schemaPath = "schema/" + schemaPath;
+      }
       return this;
     }
 
