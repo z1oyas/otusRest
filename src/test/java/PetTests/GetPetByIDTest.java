@@ -25,38 +25,35 @@ public class GetPetByIDTest {
   @DisplayName("Запрос к магазину по id питомца")
   void getPetByID() {
     pipeline
-        .setApi(getPetApi)
-        .setPath("/8")
-        .hasRequestBody(false)
-        .shouldValidate(true)
-        .setStatusCode(200)
-        .setExpectedHeaders("access-control-allow-methods", "GET, POST, DELETE, PUT")
-        .setResponseBodySchemaPath("PetSchema.json")
-        .execute();
+        .setPath("/8") // id питомца
+        .hasRequestBody(false) // нет тела
+        .shouldValidate(true) // валидация
+        .setStatusCode(200) // ожидаемый статус
+        .setExpectedHeaders("access-control-allow-methods", "GET, POST, DELETE, PUT") // ожидаемые заголовки
+        .setResponseBodySchemaPath("PetSchema.json") // путь к файлу схемы
+        .execute();  //выполнить запрос и валидацию
   }
   @Test
   @DisplayName("Запрос к магазину c несуществующим id питомца")
   void getPetByNoNExistingID() {
     pipeline
-        .setApi(getPetApi)
-        .setRequestHeaders("api_key", "special-key")
-        .setPath("/892198862731")
-        .hasRequestBody(false)
-        .shouldValidate(true)
-        .setStatusCode(404)
-        .execute();
+        .setRequestHeaders("api_key", "special-key") // заголовки запроса
+        .setPath("/892198862731") // несуществующий id питомца
+        .hasRequestBody(false) // нет тела
+        .shouldValidate(true) // валидация
+        .setStatusCode(404) // ожидаемый статус
+        .execute(); //выполнить запрос и валидацию
   }
 
   @Test
   @DisplayName("Запрос к магазину c невалидным id питомца")
   void getPetByInvalidID() {
     pipeline
-        .setApi(getPetApi)
-        .setPath("/testId")
-        .hasRequestBody(false)
-        .shouldValidate(true)
-        .setStatusCode(404)
-        .SetExpectedFields("message", "java.lang.NumberFormatException: For input string: \"testId\"")
-        .execute();
+        .setPath("/testId") // невалидный id питомца
+        .hasRequestBody(false) // нет тела
+        .shouldValidate(true) // валидация
+        .setStatusCode(404) // ожидаемый статус
+        .SetExpectedFields("message", "java.lang.NumberFormatException: For input string: \"testId\"") // ожидаемые заголовки
+        .execute(); //выполнить запрос и валидацию
   }
 }

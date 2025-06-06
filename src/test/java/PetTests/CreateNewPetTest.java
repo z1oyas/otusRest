@@ -45,36 +45,35 @@ public class CreateNewPetTest {
                                               .build())) // теги питомца
                                     .build();
     pipeline
-        .hasRequestBody(true)
-        .setRequestBody(body)
-        .shouldValidate(true)
-        .setStatusCode(200)
-        .setResponseBodySchemaPath("PetSchema.json")
-        .execute();
+        .hasRequestBody(true) //есть тело запроса
+        .setRequestBody(body) //тело запроса
+        .shouldValidate(true) // нужна ли валидация ответа
+        .setStatusCode(200) // ожидаемый код ответа
+        .setResponseBodySchemaPath("PetSchema.json") //путь к схеме
+        .execute(); //выполнить запрос и валидацию
   }
 
   @Test
   @DisplayName("Попытка создания карточки питомца в магазине без передачи тела запроса")
   void createUserInvalid() {
     pipeline
-        .hasRequestBody(false)
-        .shouldValidate(true)
-        .SetExpectedFields("message", "no data")
-        .SetExpectedFields("type", "unknown")
-        .setStatusCode(405)
-        .execute();
+        .hasRequestBody(false) //нет тела запроса
+        .shouldValidate(true) // нужна ли валидация
+        .SetExpectedFields("message", "no data") // ожидаемое значение поля
+        .SetExpectedFields("type", "unknown") // ожидаемое значение поля
+        .setStatusCode(405) // ожидаемый код ответа
+        .execute(); //выполнить запрос и валидацию
   }
 
   @Test
   @DisplayName("Попытка запроса с неправильным методом")
   void getRequestCreation() {
     pipeline
-    .setApi(createPetApi)
-    .hasRequestBody(false)
-    .setRequestType(Method.GET)
-    .shouldValidate(true)
-    .setStatusCode(405)
-    .execute();
+    .hasRequestBody(false) //нет тела запроса
+    .setRequestType(Method.GET) //неправильный метод
+    .shouldValidate(true) // нужна ли валидация
+    .setStatusCode(405)  // ожидаемый код ответа
+    .execute();  //выполнить запрос и валидацию
   }
 }
 
