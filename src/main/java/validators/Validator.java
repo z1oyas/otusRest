@@ -12,7 +12,7 @@ public class Validator {
   private ValidatableResponse response;
   private Integer code;
   private Map<String, String> headers;
-  private Map<String, String> fieldValue;
+  private Map<String, Object> fieldValue;
 
 
   private Validator(ValidationParams validationParams) {
@@ -60,12 +60,12 @@ public class Validator {
     private ValidatableResponse response;
     private Integer code;
     private Map<String, String> headers = new HashMap<>();
-    private Map<String, String> fieldValue = new HashMap<>();
+    private Map<String, Object> fieldValue = new HashMap<>();
 
     public ValidationParams() {
     }
 
-    public ValidationParams setFieldValue(Map<String, String> fieldValue) {
+    public ValidationParams setFieldValue(Map<String, Object> fieldValue) {
       this.fieldValue = fieldValue != null ? new HashMap<>(fieldValue) : new HashMap<>();
       return this;
     }

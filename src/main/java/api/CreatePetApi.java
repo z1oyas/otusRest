@@ -2,10 +2,10 @@ package api;
 
 import static io.restassured.RestAssured.given;
 
-import dto.ABodyRequest;
+import dto.createpet.PetBodyRequest;
 import io.restassured.response.ValidatableResponse;
 
-public class CreatePetApi extends BaseApi {
+public class CreatePetApi extends BaseApi<PetBodyRequest> {
 
 
   public CreatePetApi() {
@@ -29,7 +29,7 @@ public class CreatePetApi extends BaseApi {
   }
 
 
-  private ValidatableResponse makePostRequest(ABodyRequest body) {
+  private ValidatableResponse makePostRequest(PetBodyRequest body) {
     return given(spec)
                .basePath("/pet"+path)
                .headers(safeHeaders())

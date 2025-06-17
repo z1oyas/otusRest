@@ -17,7 +17,7 @@ public class RequestPipeline implements IRequestPipeline {
   private Map<String, String> responseHeaders;
   private boolean hasBody;
   boolean validate;
-  private Map<String, String> expectedFields;
+  private Map<String, Object> expectedFields;
 
   private Integer code;
   private String schemaPath;
@@ -94,7 +94,7 @@ public class RequestPipeline implements IRequestPipeline {
 
 
   @Override
-  public RequestPipeline setExpectedFields(String field, String value) {
+  public RequestPipeline setExpectedFields(String field, Object value) {
     this.expectedFields.put(field, value);
     return this;
   }

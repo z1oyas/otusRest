@@ -10,11 +10,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseApi {
+public abstract class BaseApi<T extends ABodyRequest> {
 
   protected static final String BASE_URL = System.getProperty("base.url");
   protected RequestSpecification spec;
-  protected ABodyRequest bodyRequest;
+  protected T bodyRequest;
   protected String path;
   protected Map<String, String> headers;
 
@@ -27,7 +27,7 @@ public abstract class BaseApi {
                .contentType(ContentType.JSON);
   }
 
-  public BaseApi setBody(ABodyRequest bodyRequest){
+  public BaseApi setBody(T bodyRequest){
     this.bodyRequest = bodyRequest;
     return this;
   }

@@ -18,7 +18,7 @@ public interface IRequestPipeline {
 
   IRequestPipeline setRequestHeaders(String header, String value);
 
-  IRequestPipeline setExpectedFields(String field, String value);
+  IRequestPipeline setExpectedFields(String field, Object value);
 
   IRequestPipeline setStatusCode(Integer code);
 

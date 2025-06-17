@@ -25,6 +25,7 @@ public class GetPetByIDTest {
   @Test
   @DisplayName("Запрос к магазину по id питомца")
   void getPetByID() {
+    // сделать запрос на получение карточки питомца по id
     pipeline
         .setPath("/9") // id питомца
         .hasRequestBody(false) // нет тела
@@ -38,6 +39,7 @@ public class GetPetByIDTest {
   @Test
   @DisplayName("Запрос к магазину c несуществующим id питомца")
   void getPetByNoNExistingID() {
+    // сделать запрос на получение карточки питомца по несуществующему id
     pipeline
         .setRequestHeaders("api_key", "special-key") // заголовки запроса
         .setPath("/892198862731") // несуществующий id питомца
@@ -50,6 +52,7 @@ public class GetPetByIDTest {
   @Test
   @DisplayName("Запрос к магазину c невалидным id питомца")
   void getPetByInvalidID() {
+    // сделать запрос на получение карточки питомца по невалидному id
     pipeline
         .setPath("/testId") // невалидный id питомца
         .hasRequestBody(false) // нет тела
