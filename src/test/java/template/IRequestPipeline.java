@@ -6,28 +6,28 @@ import dto.ABodyRequest;
 
 public interface IRequestPipeline {
 
-   void execute();
+  void execute();
 
-   IRequestPipeline setPath(String path);
+  IRequestPipeline setPath(String path);
 
-   IRequestPipeline setRequestType(Method method);
+  IRequestPipeline setRequestType(Method method);
 
-   IRequestPipeline setRequestBody(ABodyRequest body);
+  IRequestPipeline setRequestBody(ABodyRequest body);
 
-   IRequestPipeline hasRequestBody(boolean hasBody);
+  IRequestPipeline hasRequestBody(boolean hasBody);
 
-   IRequestPipeline setRequestHeaders(String header , String value);
+  IRequestPipeline setRequestHeaders(String header, String value);
 
-   IRequestPipeline SetExpectedFields(String field, String value);
+  IRequestPipeline setExpectedFields(String field, String value);
 
-   IRequestPipeline setStatusCode(Integer code);
+  IRequestPipeline setStatusCode(Integer code);
 
-   IRequestPipeline setExpectedHeaders(String header , String value);
+  IRequestPipeline setExpectedHeaders(String header, String value);
 
-   IRequestPipeline setResponseBodySchemaPath(String schemaPath);
+  IRequestPipeline setResponseBodySchemaPath(String schemaPath);
 
-   IRequestPipeline setApi(BaseApi api);
+  IRequestPipeline setApi(BaseApi api);
 
-   IRequestPipeline shouldValidate(boolean shouldValidate);
+  IRequestPipeline shouldValidate(boolean shouldValidate);
 
 }

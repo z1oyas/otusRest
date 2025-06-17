@@ -1,0 +1,6 @@
+<FindBugsFilter>
+    <Match>
+        <Bug code="US" />
+        <Bug pattern="US_USELESS_SUPPRESSION_ON_CLASS" />
+    </Match>
+</FindBugsFilter>

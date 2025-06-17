@@ -1,6 +1,6 @@
 package template;
 
-import Validators.Validator;
+import validators.Validator;
 import api.BaseApi;
 import dto.ABodyRequest;
 import io.restassured.response.ValidatableResponse;
@@ -24,7 +24,7 @@ public class RequestPipeline implements IRequestPipeline {
 
   public RequestPipeline() {
     path = "";
-    this.expectedFields =new HashMap<>();
+    this.expectedFields = new HashMap<>();
     shouldValidate = false;
     this.api = null;
     this.method = BaseApi.Method.GET;
@@ -36,20 +36,20 @@ public class RequestPipeline implements IRequestPipeline {
 
     this.code = 200;
 
-    this.schemaPath ="";
+    this.schemaPath = "";
   }
 
   @Override
   public void execute() {
     this.api.setPath(this.path)
         .setHeaders(this.headers);
-    if(hasBody){
+    if (hasBody) {
       this.api.setBody(this.body);
     }
 
     ValidatableResponse response = this.api.makeRequest(method);
 
-    if(shouldValidate) {
+    if (shouldValidate) {
       Validator validator = new Validator.ValidationParams()
                                 .setResponse(response) //ответ от сервера
                                 .setExpectedStatusCode(code) // ожидаемый статус код
@@ -94,7 +94,7 @@ public class RequestPipeline implements IRequestPipeline {
 
 
   @Override
-  public RequestPipeline SetExpectedFields(String field, String value) {
+  public RequestPipeline setExpectedFields(String field, String value) {
     this.expectedFields.put(field, value);
     return this;
   }
@@ -106,7 +106,7 @@ public class RequestPipeline implements IRequestPipeline {
   }
 
   @Override
-  public RequestPipeline setExpectedHeaders(String header , String value) {
+  public RequestPipeline setExpectedHeaders(String header, String value) {
     this.responseHeaders.put(header, value);
     return this;
   }

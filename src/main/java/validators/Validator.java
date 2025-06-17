@@ -1,4 +1,4 @@
-package Validators;
+package validators;
 
 import static org.hamcrest.Matchers.equalTo;
 
@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Validator {
-  String schemaPath;
-  ValidatableResponse response;
+  private String schemaPath;
+  private ValidatableResponse response;
   private Integer code;
-  Map<String,String> headers;
-  Map<String,String> fieldValue;
+  private Map<String, String> headers;
+  private Map<String, String> fieldValue;
 
 
   private Validator(ValidationParams validationParams) {
@@ -23,17 +23,17 @@ public class Validator {
     this.fieldValue = validationParams.fieldValue;
   }
 
-  public void validate(){
-    if(schemaPath!=null){
+  public void validate() {
+    if (schemaPath != null) {
       this.validateResponse();
     }
     if (code != null) {
       this.validateResponseCode();
     }
-    if((headers != null && !headers.isEmpty())){
+    if ((headers != null && !headers.isEmpty())) {
       this.validateResponseHeaders();
     }
-    if((fieldValue != null && !fieldValue.isEmpty())){
+    if ((fieldValue != null && !fieldValue.isEmpty())) {
       this.validateFieldsValues();
     }
   }
@@ -45,8 +45,9 @@ public class Validator {
   private void validateFieldsValues() {
     fieldValue.forEach((key, value) -> response.body(key, equalTo(value)));
   }
+
   private ValidatableResponse validateResponseCode() {
-      return response.statusCode(code);
+    return response.statusCode(code);
   }
 
   private ValidatableResponse validateResponseHeaders() {
@@ -58,14 +59,14 @@ public class Validator {
     private String schemaPath;
     private ValidatableResponse response;
     private Integer code;
-    private Map<String,String> headers = new HashMap<>();
-    private Map<String,String> fieldValue = new HashMap<>();
+    private Map<String, String> headers = new HashMap<>();
+    private Map<String, String> fieldValue = new HashMap<>();
 
     public ValidationParams() {
     }
 
     public ValidationParams setFieldValue(Map<String, String> fieldValue) {
-      this.fieldValue = fieldValue;
+      this.fieldValue = fieldValue != null ? new HashMap<>(fieldValue) : new HashMap<>();
       return this;
     }
 
@@ -80,22 +81,21 @@ public class Validator {
     }
 
     public ValidationParams setExpectedHeaders(Map<String, String> headers) {
-      this.headers = headers;
+      this.headers = headers != null ? new HashMap<>(headers) : new HashMap<>();
       return this;
     }
 
     public ValidationParams setSchemaPath(String schemaPath) {
-      if(schemaPath.isEmpty()){
+      if (schemaPath.isEmpty()) {
         return this;
-      }
-      else {
+      } else {
         this.schemaPath = "schema/" + schemaPath;
       }
       return this;
     }
 
-    public Validator bulid(){
-     return new Validator(this);
+    public Validator bulid() {
+      return new Validator(this);
     }
   }
 

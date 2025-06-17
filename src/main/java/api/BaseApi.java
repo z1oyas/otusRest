@@ -38,7 +38,7 @@ public abstract class BaseApi {
   }
 
   public BaseApi setHeaders(Map<String, String> headers){
-    this.headers = headers;
+    this.headers = headers != null ? new HashMap<>(headers) : new HashMap<>();
     return this;
   }
   protected Map<String, String> safeHeaders() {

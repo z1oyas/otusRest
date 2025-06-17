@@ -1,4 +1,4 @@
-package PetTests;
+package pettests;
 
 import api.BaseApi;
 import api.GetPetApi;
@@ -21,11 +21,12 @@ public class GetPetByIDTest {
     pipeline.setApi(getPetApi);
     pipeline.setRequestType(BaseApi.Method.GET);
   }
+
   @Test
   @DisplayName("Запрос к магазину по id питомца")
   void getPetByID() {
     pipeline
-        .setPath("/8") // id питомца
+        .setPath("/9") // id питомца
         .hasRequestBody(false) // нет тела
         .shouldValidate(true) // валидация
         .setStatusCode(200) // ожидаемый статус
@@ -33,6 +34,7 @@ public class GetPetByIDTest {
         .setResponseBodySchemaPath("PetSchema.json") // путь к файлу схемы
         .execute();  //выполнить запрос и валидацию
   }
+
   @Test
   @DisplayName("Запрос к магазину c несуществующим id питомца")
   void getPetByNoNExistingID() {
@@ -53,7 +55,7 @@ public class GetPetByIDTest {
         .hasRequestBody(false) // нет тела
         .shouldValidate(true) // валидация
         .setStatusCode(404) // ожидаемый статус
-        .SetExpectedFields("message", "java.lang.NumberFormatException: For input string: \"testId\"") // ожидаемые заголовки
+        .setExpectedFields("message", "java.lang.NumberFormatException: For input string: \"testId\"") // ожидаемые заголовки
         .execute(); //выполнить запрос и валидацию
   }
 }

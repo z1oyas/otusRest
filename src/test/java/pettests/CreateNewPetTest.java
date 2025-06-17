@@ -1,9 +1,9 @@
-package PetTests;
+package pettests;
 
 import api.CreatePetApi;
-import dto.CreatePet.PetBodyRequest;
-import dto.CreatePet.Category;
-import dto.CreatePet.Tag;
+import dto.createpet.PetBodyRequest;
+import dto.createpet.Category;
+import dto.createpet.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,19 +31,19 @@ public class CreateNewPetTest {
   @DisplayName("Создание карточки питомца в магазине")
   void createUser() {
     PetBodyRequest body = PetBodyRequest.builder()
-                                    .id(89219886273L)
-                                    .category(Category.builder()
-                                                  .id(89219886273L) //id категории
-                                                  .name("Dogs") //название категории
-                                                  .build())   //объект категории
-                                    .name("Banana") //имя питомца в магазине
-                                    .photoUrls(List.of("https://gclnk.com/ynYpTObL")) //ссылки на фото питомца
-                                    .status("available") // статус питомца
-                                    .tags(List.of(Tag.builder()
-                                              .id(89219886273L)
-                                              .name("FamilyDogs")
-                                              .build())) // теги питомца
-                                    .build();
+                              .id(89219886273L)
+                              .category(Category.builder()
+                                            .id(89219886273L) //id категории
+                                            .name("Dogs") //название категории
+                                            .build())   //объект категории
+                              .name("Banana") //имя питомца в магазине
+                              .photoUrls(List.of("https://gclnk.com/ynYpTObL")) //ссылки на фото питомца
+                              .status("available") // статус питомца
+                              .tags(List.of(Tag.builder()
+                                                .id(89219886273L)
+                                                .name("FamilyDogs")
+                                                .build())) // теги питомца
+                              .build();
     pipeline
         .hasRequestBody(true) //есть тело запроса
         .setRequestBody(body) //тело запроса
@@ -59,8 +59,8 @@ public class CreateNewPetTest {
     pipeline
         .hasRequestBody(false) //нет тела запроса
         .shouldValidate(true) // нужна ли валидация
-        .SetExpectedFields("message", "no data") // ожидаемое значение поля
-        .SetExpectedFields("type", "unknown") // ожидаемое значение поля
+        .setExpectedFields("message", "no data") // ожидаемое значение поля
+        .setExpectedFields("type", "unknown") // ожидаемое значение поля
         .setStatusCode(405) // ожидаемый код ответа
         .execute(); //выполнить запрос и валидацию
   }
@@ -69,11 +69,11 @@ public class CreateNewPetTest {
   @DisplayName("Попытка запроса с неправильным методом")
   void getRequestCreation() {
     pipeline
-    .hasRequestBody(false) //нет тела запроса
-    .setRequestType(Method.GET) //неправильный метод
-    .shouldValidate(true) // нужна ли валидация
-    .setStatusCode(405)  // ожидаемый код ответа
-    .execute();  //выполнить запрос и валидацию
+        .hasRequestBody(false) //нет тела запроса
+        .setRequestType(Method.GET) //неправильный метод
+        .shouldValidate(true) // нужна ли валидация
+        .setStatusCode(405)  // ожидаемый код ответа
+        .execute();  //выполнить запрос и валидацию
   }
 }
 

@@ -1,5 +1,5 @@
 
-package dto.CreatePet;
+package dto.createpet;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class Category {
 
-    private Long id;
-    private String name;
+  private Long id;
+  private String name;
 
 }
