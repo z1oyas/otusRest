@@ -31,6 +31,12 @@ public class RequestPipeline implements IRequestPipeline {
   public RequestPipeline(BaseApi api) {
     setDefaultValues();
     this.api = api;
+    setDefaultsFromApi();
+  }
+
+  private void setDefaultsFromApi() {
+    this.method = api.getDefaultMethod();
+    this.path = api.getDefaultPath();
   }
 
   private void setDefaultValues(){

@@ -1,26 +1,26 @@
 package guice;
 
-import api.BaseApi;
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Scopes;
+import com.google.inject.name.Names;
+import factory.ApiFactory;
 import template.IRequestPipeline;
 import template.RequestPipeline;
+import java.util.List;
 
 public class PipelineModule extends AbstractModule {
-  private BaseApi api;
+  private List<String> apiNames;
 
-  public PipelineModule(BaseApi api) {
-    this.api = api;
+  public PipelineModule(List<String> apiNames) {
+    this.apiNames = apiNames;
 
   }
   @Override
   protected void configure() {
-    bind(IRequestPipeline.class).to(RequestPipeline.class).in(Scopes.NO_SCOPE);
-  }
 
-  @Provides
-  public BaseApi provideApi() {
-    return api;
+    for (String apiName : apiNames) {
+      bind(IRequestPipeline.class)
+          .annotatedWith(Names.named(apiName))
+          .toInstance(new RequestPipeline(ApiFactory.create(apiName)));
+    }
   }
 }

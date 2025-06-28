@@ -28,6 +28,10 @@ public class CreatePetApi extends BaseApi<PetBodyRequest> {
     }
   }
 
+  @Override
+  public Method getDefaultMethod() {
+    return Method.POST;
+  }
 
   private ValidatableResponse makePostRequest(PetBodyRequest body) {
     return given(spec)

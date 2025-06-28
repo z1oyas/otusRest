@@ -57,5 +57,16 @@ public abstract class BaseApi<T extends ABodyRequest> {
    */
   public abstract ValidatableResponse makeRequest(Method method);
 
-
+  /**
+   * Указывает дефолтный метод
+   */
+  public Method getDefaultMethod() {
+    return Method.GET;
+  }
+  /**
+   * Указывает дефолтный путь
+   */
+  public String getDefaultPath() {
+    return "";
+  }
 }
