@@ -17,7 +17,6 @@ public class RequestPipeline implements IRequestPipeline {
   private Map<String, String> headers;
   private Map<String, String> responseHeaders;
   private boolean hasBody;
-  boolean validate;
   private Map<String, Object> expectedFields;
 
   private Integer code;
@@ -49,7 +48,6 @@ public class RequestPipeline implements IRequestPipeline {
     this.headers = new HashMap<>();
     this.responseHeaders = new HashMap<>();
     this.hasBody = false;
-    this.validate = false;
 
     this.code = 200;
 

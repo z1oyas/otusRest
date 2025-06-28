@@ -26,7 +26,6 @@ public class Extention implements BeforeEachCallback, AfterEachCallback {
     Object testInstance = context.getTestInstance().orElseThrow();
     Class<?> testClass = testInstance.getClass();
     List<String>  apiNames = getAnnotation(testClass);
-    ApiFactory factory = new ApiFactory();
     Injector injector = Guice.createInjector(new PipelineModule(apiNames));
     INJECTOR_THREAD_LOCAL.set(injector);
     injector.injectMembers(context.getTestInstance().isPresent() ? context.getTestInstance().get() : null);

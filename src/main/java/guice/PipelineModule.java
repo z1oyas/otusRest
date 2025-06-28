@@ -2,11 +2,13 @@ package guice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import factory.ApiFactory;
 import template.IRequestPipeline;
 import template.RequestPipeline;
 import java.util.List;
 
+@SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Модуль управляется DI, и его изменять извне не предполагается")
 public class PipelineModule extends AbstractModule {
   private List<String> apiNames;
 

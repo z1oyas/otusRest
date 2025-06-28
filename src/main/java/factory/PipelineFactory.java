@@ -7,5 +7,5 @@ public class PipelineFactory {
 
   public static IRequestPipeline create() {
     return new RequestPipeline();
-    }
+  }
 }
