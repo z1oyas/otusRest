@@ -1,5 +1,6 @@
 package template;
 
+import com.google.inject.Inject;
 import validators.Validator;
 import api.BaseApi;
 import dto.ABodyRequest;
@@ -23,6 +24,16 @@ public class RequestPipeline implements IRequestPipeline {
   private String schemaPath;
 
   public RequestPipeline() {
+    setDefaultValues();
+  }
+
+  @Inject
+  public RequestPipeline(BaseApi api) {
+    setDefaultValues();
+    this.api = api;
+  }
+
+  private void setDefaultValues(){
     path = "";
     this.expectedFields = new HashMap<>();
     shouldValidate = false;
@@ -38,6 +49,7 @@ public class RequestPipeline implements IRequestPipeline {
 
     this.schemaPath = "";
   }
+
 
   @Override
   public void execute() {

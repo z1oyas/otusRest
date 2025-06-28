@@ -1,33 +1,40 @@
 package pettests;
 
+import annatations.ApiType;
 import api.BaseApi;
 import api.GetPetApi;
+import extentions.Extention;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import template.IRequestPipeline;
 import template.RequestPipeline;
 
+@ExtendWith(Extention.class)
 @org.junit.jupiter.api.Tag("PetShopTests")
 @org.junit.jupiter.api.Tag("GetPetByID")
+@ApiType("getPetApi")
 public class GetPetByIDTest {
+  @Inject
   IRequestPipeline pipeline;
-  GetPetApi getPetApi;
-
-  @BeforeEach
-  public void setUp() {
-    pipeline = new RequestPipeline();
-    getPetApi = new GetPetApi();
-    pipeline.setApi(getPetApi);
-    pipeline.setRequestType(BaseApi.Method.GET);
-  }
+//  GetPetApi getPetApi;
+//
+//  @BeforeEach
+//  public void setUp() {
+//    pipeline = new RequestPipeline();
+//    getPetApi = new GetPetApi();
+//    pipeline.setApi(getPetApi);
+//    pipeline.setRequestType(BaseApi.Method.GET);
+//  }
 
   @Test
   @DisplayName("Запрос к магазину по id питомца")
   void getPetByID() {
     // сделать запрос на получение карточки питомца по id
     pipeline
-        .setPath("/9") // id питомца
+        .setPath("/8") // id питомца
         .hasRequestBody(false) // нет тела
         .shouldValidate(true) // валидация
         .setStatusCode(200) // ожидаемый статус
