@@ -28,4 +28,16 @@ public class PetBodyRequest extends ABodyRequest {
   private String status;
   private List<Tag> tags;
 
+  @Override
+  public void emptynessCheck() {
+    if (name == null || name.isEmpty()) {
+      throw new IllegalArgumentException("Name is required");
+    }
+    if (id == null) {
+      throw new IllegalArgumentException("ID is required");
+    }
+    if (status == null || status.isEmpty()) {
+      throw new IllegalArgumentException("Status is required");
+    }
+  }
 }

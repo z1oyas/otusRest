@@ -12,6 +12,7 @@ import api.BaseApi.Method;
 import org.junit.jupiter.api.extension.ExtendWith;
 import template.IRequestPipeline;
 import java.util.List;
+import utilits.DataGenerator;
 
 @ExtendWith(Extention.class)
 @org.junit.jupiter.api.Tag("PetShopTests")
@@ -29,18 +30,20 @@ public class CreateNewPetTest {
   @Test
   @DisplayName("Создание карточки питомца в магазине")
   void createUser() {
+    String name = DataGenerator.generateName(9);
+    Long id = DataGenerator.generateId();
     //сделать запрос на создание карточки питомца
     PetBodyRequest body = PetBodyRequest.builder()
-                              .id(79219886274L)
+                              .id(id)
                               .category(Category.builder()
-                                            .id(79219886274L) //id категории
+                                            .id(id) //id категории
                                             .name("Dogs") //название категории
                                             .build())   //объект категории
-                              .name("Potatos") //имя питомца в магазине
+                              .name(name) //имя питомца в магазине
                               .photoUrls(List.of("https://gclnk.com/ynYpTObL")) //ссылки на фото питомца
                               .status("available") // статус питомца
                               .tags(List.of(Tag.builder()
-                                                .id(79219886274L)
+                                                .id(id)
                                                 .name("FamilyDogs")
                                                 .build())) // теги питомца
                               .build();
@@ -54,12 +57,12 @@ public class CreateNewPetTest {
 
     //сделать запрос на проверку, что карточка питомца заведена
     getPipeline
-        .setPath("/79219886274") // id питомца
+        .setPath("/"+id) // id питомца
         .shouldValidate(true) // валидация
         .setStatusCode(200) // ожидаемый статус
-        .setExpectedFields("id", 79219886274L)
+        .setExpectedFields("id", id)
         .setExpectedFields("category.name", "Dogs")
-        .setExpectedFields("name", "Potatos")
+        .setExpectedFields("name", name)
         .setExpectedFields("status", "available")
         .setExpectedFields("tags[0].name", "FamilyDogs")
         .setExpectedFields("photoUrls[0]", "https://gclnk.com/ynYpTObL")

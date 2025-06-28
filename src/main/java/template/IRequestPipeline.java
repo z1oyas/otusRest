@@ -14,6 +14,8 @@ public interface IRequestPipeline {
 
   IRequestPipeline setRequestBody(ABodyRequest body);
 
+  IRequestPipeline setBrokenRequestBody(ABodyRequest body);
+
   IRequestPipeline hasRequestBody(boolean hasBody);
 
   IRequestPipeline setRequestHeaders(String header, String value);

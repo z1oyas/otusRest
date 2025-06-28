@@ -1,7 +1,7 @@
 package template;
 
 import com.google.inject.Inject;
-import validators.Validator;
+import utilits.Validator;
 import api.BaseApi;
 import dto.ABodyRequest;
 import io.restassured.response.ValidatableResponse;
@@ -94,6 +94,13 @@ public class RequestPipeline implements IRequestPipeline {
 
   @Override
   public RequestPipeline setRequestBody(ABodyRequest body) {
+    this.body = body;
+    this.body.emptynessCheck();
+    return this;
+  }
+
+  @Override
+  public IRequestPipeline setBrokenRequestBody(ABodyRequest body) {
     this.body = body;
     return this;
   }
