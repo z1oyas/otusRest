@@ -22,7 +22,7 @@ public class PipelineModule extends AbstractModule {
     for (String apiName : apiNames) {
       bind(IRequestPipeline.class)
           .annotatedWith(Names.named(apiName))
-          .toInstance(new RequestPipeline(ApiFactory.create(apiName)));
+          .toProvider(() -> new RequestPipeline(ApiFactory.create(apiName)));
     }
   }
 }

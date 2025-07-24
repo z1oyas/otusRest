@@ -1,5 +1,6 @@
 package pettests;
 
+import com.google.inject.Provider;
 import com.google.inject.name.Named;
 import dto.createpet.PetBodyRequest;
 import dto.createpet.Category;
@@ -21,11 +22,12 @@ import utilits.DataGenerator;
 public class CreateNewPetTest {
   @Inject
   @Named("createPetApi")
-  IRequestPipeline pipeline;
+  Provider<IRequestPipeline> pipelineProvider;
 
   @Inject
   @Named("getPetApi")
-  IRequestPipeline getPipeline;
+  Provider<IRequestPipeline> getPipelineProvider;
+
 
   @Test
   @DisplayName("Создание карточки питомца в магазине")
@@ -47,6 +49,8 @@ public class CreateNewPetTest {
                                                 .name("FamilyDogs")
                                                 .build())) // теги питомца
                               .build();
+
+    IRequestPipeline pipeline = pipelineProvider.get();   
     pipeline
         .hasRequestBody(true) //есть тело запроса
         .setRequestBody(body) //тело запроса
@@ -56,6 +60,8 @@ public class CreateNewPetTest {
         .execute(); //выполнить запрос и валидацию
 
     //сделать запрос на проверку, что карточка питомца заведена
+    IRequestPipeline getPipeline = getPipelineProvider.get(); // <- новый экземпляр!
+
     getPipeline
         .setPath("/"+id) // id питомца
         .shouldValidate(true) // валидация
@@ -68,12 +74,16 @@ public class CreateNewPetTest {
         .setExpectedFields("photoUrls[0]", "https://gclnk.com/ynYpTObL")
         .setResponseBodySchemaPath("PetSchema.json") // путь к файлу схемы
         .execute();  //выполнить запрос и валидацию
+
+    System.out.println("Thread: " + Thread.currentThread().getName());
   }
 
   @Test
   @DisplayName("Попытка создания карточки питомца в магазине без передачи тела запроса")
   void createUserInvalid() {
     //сделать запрос на создание карточки питомца без передачи тела
+    IRequestPipeline pipeline = pipelineProvider.get(); // <- новый экземпляр!
+
     pipeline
         .hasRequestBody(false) //есть тело запроса
         .shouldValidate(true) // нужна ли валидация ответа
@@ -81,18 +91,24 @@ public class CreateNewPetTest {
         .setExpectedFields("type", "unknown") // ожидаемое значение поля
         .setStatusCode(405) // ожидаемый код ответа
         .execute(); //выполнить запрос и валидацию
+
+    System.out.println("Thread: " + Thread.currentThread().getName());
   }
 
   @Test
   @DisplayName("Попытка запроса с неправильным методом")
   void getRequestCreation() {
     //сделать запрос с неправильным методом
+    IRequestPipeline pipeline = pipelineProvider.get(); // <- новый экземпляр!
+
     pipeline
         .hasRequestBody(false) //нет тела запроса
         .setRequestType(Method.GET) //неправильный метод
         .shouldValidate(true) // нужна ли валидация
         .setStatusCode(405)  // ожидаемый код ответа
         .execute();  //выполнить запрос и валидацию
+
+    System.out.println("Thread: " + Thread.currentThread().getName());
   }
 }
 
