@@ -1,5 +1,7 @@
 FROM maven:3.9.8-eclipse-temurin-17
 
+USER root
+RUN mkdir /app
 WORKDIR /app
 
 COPY pom.xml ./
