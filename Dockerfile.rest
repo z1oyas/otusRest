@@ -6,6 +6,11 @@ COPY pom.xml ./
 RUN mvn dependency:go-offline
 COPY src ./src
 
+VOLUME ["/app/allure-results"]
+
+ENV ALLURE_RESULTS=/app/allure-results
+
 ENTRYPOINT ["sh", "-c", "\
   mvn clean test \
-  -Dbase_url=${BASE_URL}"]
+  -Dbase_url=${BASE_URL} \
+  -Dallure.results.directory=${ALLURE_RESULTS}"]

@@ -14,7 +14,7 @@ timeout(1200){
             }
             stage("Running UI Automation") {
                 def status = sh(
-                        script: "docker run --name=rest_tests -e BASE_URL=$base_url --network=host -v \$PWD/allure-results:/app/target/allure-results localhost:5005/rest_tests:latest",
+                        script: "docker run --name=rest_tests -e BASE_URL=$base_url --network=host -v \$PWD/allure-results:/app/allure-results localhost:5005/rest_tests:latest",
                         returnStatus: true
                 )
                 if (status > 0) {
