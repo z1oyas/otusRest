@@ -27,44 +27,44 @@ timeout(1200){
                 sh "ls -la allure-results || true"
             }
 
-            stage("Allure report publisher") {
-                allure([
-                        includeProperties: false,
-                        jdk              : '',
-                        properties       : [],
-                        reportBuildPolicy: 'ALWAYS',
-                        results          : [[path: 'target/allure-results']]
-                ])
-            }
+//             stage("Allure report publisher") {
+//                 allure([
+//                         includeProperties: false,
+//                         jdk              : '',
+//                         properties       : [],
+//                         reportBuildPolicy: 'ALWAYS',
+//                         results          : [[path: 'target/allure-results']]
+//                 ])
+//             }
 
-            stage("Gets statistics from allure artifacts") {
-                def jsonLines = readFile "allure-report/widgets/summary.json"
-                def slurped = new JsonSlurperClassic().parseText(jsonLines)
+//             stage("Gets statistics from allure artifacts") {
+//                 def jsonLines = readFile "allure-report/widgets/summary.json"
+//                 def slurped = new JsonSlurperClassic().parseText(jsonLines)
+//
+//                 slurped.each{k, v ->
+//                     testsStatistics[k] =v
+//                 }
+//
+//             }
 
-                slurped.each{k, v ->
-                    testsStatistics[k] =v
-                }
 
-            }
-
-
-            stage("Telegram notification") {
-                def message = """=============REST TESTS RESULT ================
-                base_url: $base_url
-                """
-
-                testsStatistics.each{k,v ->
-                    message += "\t\t$k: $v\n"
-                }
-                withCredentials([string(credentialsId: 'chat_id', variable: 'chatId'), string(credentialsId: 'bot_token',variable: 'botToken')]){
-                    sh """
-                    curl -X POST \
-                    -H 'Content-Type: application/json' \
-                    -d '{"chat_id": "$chatId", "text": "$message"}' \
-                    "https://api.telegram.org/bot$botToken/sendMessage"
-                    """
-                }
-            }
+//             stage("Telegram notification") {
+//                 def message = """=============REST TESTS RESULT ================
+//                 base_url: $base_url
+//                 """
+//
+//                 testsStatistics.each{k,v ->
+//                     message += "\t\t$k: $v\n"
+//                 }
+//                 withCredentials([string(credentialsId: 'chat_id', variable: 'chatId'), string(credentialsId: 'bot_token',variable: 'botToken')]){
+//                     sh """
+//                     curl -X POST \
+//                     -H 'Content-Type: application/json' \
+//                     -d '{"chat_id": "$chatId", "text": "$message"}' \
+//                     "https://api.telegram.org/bot$botToken/sendMessage"
+//                     """
+//                 }
+            //}
         }
         finally {
             stage("Cleanup") {
