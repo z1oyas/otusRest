@@ -12,7 +12,7 @@ import java.util.Map;
 
 public abstract class BaseApi<T extends ABodyRequest> {
 
-  protected static final String BASE_URL = System.getProperty("base.url");
+  protected static final String BASE_URL = System.getProperty("base_url","https://petstore.swagger.io/v2/");
   protected RequestSpecification spec;
   protected T bodyRequest;
   protected String path;
