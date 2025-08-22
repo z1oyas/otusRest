@@ -12,7 +12,7 @@ timeout(1200){
             stage("Prepare Allure results") {
                 sh "mkdir -p allure-results"
             }
-            stage("Running UI Automation") {
+            stage("Running rest Automation") {
                 def status = sh(
                         script: "docker run --name=rest_tests -e BASE_URL=$base_url --network=host -v \$PWD/allure-results:/app/allure-results localhost:5005/rest_tests:latest",
                         returnStatus: true
