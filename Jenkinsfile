@@ -27,15 +27,15 @@ timeout(1200){
                 sh "ls -la allure-results || true"
             }
 
-//             stage("Allure report publisher") {
-//                 allure([
-//                         includeProperties: false,
-//                         jdk              : '',
-//                         properties       : [],
-//                         reportBuildPolicy: 'ALWAYS',
-//                         results          : [[path: 'target/allure-results']]
-//                 ])
-//             }
+            stage("Allure report publisher") {
+                allure([
+                        includeProperties: false,
+                        jdk              : '',
+                        properties       : [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results          : [[path: 'target/allure-results']]
+                ])
+            }
 
 //             stage("Gets statistics from allure artifacts") {
 //                 def jsonLines = readFile "allure-report/widgets/summary.json"
