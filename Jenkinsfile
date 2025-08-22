@@ -17,6 +17,7 @@ timeout(1200){
                         script: "docker run --name=rest_tests -e BASE_URL=$base_url --network=host -v /home/jenkins/workspace/rest-test-runner/allure-results:/app/allure-results localhost:5005/rest_tests:latest",
                         returnStatus: true
                 )
+                sh "docker exec -it rest_tests ls -la /app/allure-results"
                 if (status > 0) {
                     currentBuild.result = 'UNSTABLE'
                 }
