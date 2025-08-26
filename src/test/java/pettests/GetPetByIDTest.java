@@ -1,5 +1,7 @@
 package pettests;
 
+import static io.qameta.allure.Allure.step;
+
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
 import extentions.Extention;
@@ -23,17 +25,18 @@ public class GetPetByIDTest {
   @DisplayName("Запрос к магазину по id питомца")
   void getPetByID() {
     // сделать запрос на получение карточки питомца по id
-    IRequestPipeline pipeline = pipelineProvider.get();  
+    IRequestPipeline pipeline = pipelineProvider.get();
 
-    pipeline
-        .setPath("/1") // id питомца
-        .hasRequestBody(false) // нет тела
-        .shouldValidate(true) // валидация
-        .setStatusCode(200) // ожидаемый статус
-        .setExpectedHeaders("access-control-allow-methods", "GET, POST, DELETE, PUT") // ожидаемые заголовки
-        .setResponseBodySchemaPath("PetSchema.json") // путь к файлу схемы
-        .execute();  //выполнить запрос и валидацию
-
+    step("Получить карточку питомца по id", () -> {
+      pipeline
+          .setPath("/1") // id питомца
+          .hasRequestBody(false) // нет тела
+          .shouldValidate(true) // валидация
+          .setStatusCode(200) // ожидаемый статус
+          .setExpectedHeaders("access-control-allow-methods", "GET, POST, DELETE, PUT") // ожидаемые заголовки
+          .setResponseBodySchemaPath("PetSchema.json") // путь к файлу схемы
+          .execute();  //выполнить запрос и валидацию
+    });
     System.out.println("Thread: " + Thread.currentThread().getName());
   }
 
@@ -42,14 +45,15 @@ public class GetPetByIDTest {
   void getPetByNoNExistingID() {
     // сделать запрос на получение карточки питомца по несуществующему id
     IRequestPipeline pipeline = pipelineProvider.get();  
-
-    pipeline
-        .setRequestHeaders("api_key", "special-key") // заголовки запроса
-        .setPath("/892198862731") // несуществующий id питомца
-        .hasRequestBody(false) // нет тела
-        .shouldValidate(true) // валидация
-        .setStatusCode(404) // ожидаемый статус
-        .execute(); //выполнить запрос и валидацию
+    step("Попытка запроса питомца с несуществующим id", () -> {
+      pipeline
+          .setRequestHeaders("api_key", "special-key") // заголовки запроса
+          .setPath("/892198862731") // несуществующий id питомца
+          .hasRequestBody(false) // нет тела
+          .shouldValidate(true) // валидация
+          .setStatusCode(404) // ожидаемый статус
+          .execute(); //выполнить запрос и валидацию
+    });
 
     System.out.println("Thread: " + Thread.currentThread().getName());
   }
@@ -59,14 +63,15 @@ public class GetPetByIDTest {
   void getPetByInvalidID() {
     // сделать запрос на получение карточки питомца по невалидному id
     IRequestPipeline pipeline = pipelineProvider.get();  
-
-    pipeline
-        .setPath("/testId") // невалидный id питомца
-        .hasRequestBody(false) // нет тела
-        .shouldValidate(true) // валидация
-        .setStatusCode(404) // ожидаемый статус
-        .setExpectedFields("message", "java.lang.NumberFormatException: For input string: \"testId\"") // ожидаемые заголовки
-        .execute(); //выполнить запрос и валидацию
+    step("запрос к магазину с невалидным id питомца", () -> {
+      pipeline
+              .setPath("/testId") // невалидный id питомца
+              .hasRequestBody(false) // нет тела
+              .shouldValidate(true) // валидация
+              .setStatusCode(404) // ожидаемый статус
+              .setExpectedFields("message", "java.lang.NumberFormatException: For input string: \"testId\"") // ожидаемые заголовки
+              .execute(); //выполнить запрос и валидацию
+    });
 
     System.out.println("Thread: " + Thread.currentThread().getName());
   }
