@@ -18,6 +18,8 @@ public class RequestPipeline implements IRequestPipeline {
   private Map<String, String> responseHeaders;
   private boolean hasBody;
   private Map<String, Object> expectedFields;
+  private boolean needWait;
+  private int waitTime;
 
   private Integer code;
   private String schemaPath;
@@ -63,7 +65,14 @@ public class RequestPipeline implements IRequestPipeline {
       this.api.setBody(this.body);
     }
 
-    ValidatableResponse response = this.api.makeRequest(method);
+    ValidatableResponse response;
+
+    if(needWait){
+      response = this.api.awaitOfAnswerRequest(() -> this.api.makeRequest(method), waitTime);
+    }
+    else {
+      response = this.api.makeRequest(method);
+    }
 
     if (shouldValidate) {
       Validator validator = new Validator.ValidationParams()
@@ -149,6 +158,13 @@ public class RequestPipeline implements IRequestPipeline {
   @Override
   public IRequestPipeline shouldValidate(boolean shouldValidate) {
     this.shouldValidate = shouldValidate;
+    return this;
+  }
+
+  @Override
+  public IRequestPipeline needWait(boolean needWait, int time) {
+    this.needWait = needWait;
+    this.waitTime = time;
     return this;
   }
 }

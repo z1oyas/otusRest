@@ -6,9 +6,12 @@ import dto.ABodyRequest;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
+import org.awaitility.Awaitility;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public abstract class BaseApi<T extends ABodyRequest> {
 
@@ -68,5 +71,12 @@ public abstract class BaseApi<T extends ABodyRequest> {
    */
   public String getDefaultPath() {
     return "";
+  }
+
+  public ValidatableResponse awaitOfAnswerRequest(Supplier<ValidatableResponse> request, int retry){
+    final ValidatableResponse[] response = new ValidatableResponse[1];
+    Awaitility.await().atMost(retry, TimeUnit.SECONDS).untilAsserted(()->
+        response[0] = request.get().statusCode(200));
+    return response[0];
   }
 }

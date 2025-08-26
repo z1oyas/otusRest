@@ -32,4 +32,6 @@ public interface IRequestPipeline {
 
   IRequestPipeline shouldValidate(boolean shouldValidate);
 
+  IRequestPipeline needWait(boolean needWait, int time);
+
 }
