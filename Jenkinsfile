@@ -62,7 +62,7 @@ timeout(1200){
                 Total: ${slurped.statistic.total}
                 Duration: ${slurped.time.duration}"""
 
-                sh "echo $messageContent"
+
 
                 withCredentials([string(credentialsId: 'chat_id', variable: 'chatId'), string(credentialsId: 'bot_token',variable: 'botToken')]){
                     sh """
