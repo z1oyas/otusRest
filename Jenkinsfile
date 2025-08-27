@@ -1,6 +1,6 @@
 import groovy.json.JsonSlurperClassic
 
-def testsStatistics = [:]
+def slurped = [:]
 
 timeout(1200){
     node("maven") {
@@ -43,28 +43,30 @@ timeout(1200){
                 def jsonLines = readFile "allure-report/widgets/summary.json"
                 def slurped = new JsonSlurperClassic().parseText(jsonLines)
 
-                slurped.each{k, v ->
-                    testsStatistics[k] =v
-                }
-                sh "echo $testsStatistics"
+//                 slurped.each{k, v ->
+//                     testsStatistics[k] =v
+//                 }
+                sh "echo $slurped"
             }
 
 
             stage("Telegram notification") {
-                def message = """=============REST TESTS RESULT ================
-                base_url: $base_url
-                """
+                def messageContent = """=============REST TESTS RESULT ================
+                base_url: ${base_url}
 
-                testsStatistics.each{k,v ->
-                    message += "\t\t$k: $v\n"
+                Test Results:
+                Passed: ${slurped.statistic.passed}
+                Failed: ${slurped.statistic.failed}
+                Broken: ${slurped.statistic.broken}
+                Skipped: ${slurped.statistic.skipped}
+                Total: ${slurped.statistic.total}
+                Duration: ${slurped.time.duration}"""
 
-                 sh "echo $message"
-                }
                 withCredentials([string(credentialsId: 'chat_id', variable: 'chatId'), string(credentialsId: 'bot_token',variable: 'botToken')]){
                     sh """
                     curl -X POST \
                     -H 'Content-Type: application/json' \
-                    -d '{"chat_id": "$chatId", "text": "$message"}' \
+                    -d '{"chat_id": "$chatId", "text": "$messageContent"}' \
                     "https://api.telegram.org/bot$botToken/sendMessage"
                     """
                 }
