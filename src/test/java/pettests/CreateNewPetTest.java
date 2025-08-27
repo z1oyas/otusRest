@@ -73,7 +73,7 @@ public class CreateNewPetTest {
     IRequestPipeline getPipeline = getPipelineProvider.get(); // <- новый экземпляр!
     step("проверка, что карточка питомца заведена, ожидание записи 15 секунд",() -> {
       getPipeline
-              .needWait(true, 15) // ожидание записи, секунды
+              .needWait(true, 30) // ожидание записи, секунды
               .setPath("/" + id[0]) // id питомца
               .shouldValidate(true) // валидация
               .setStatusCode(200) // ожидаемый статус

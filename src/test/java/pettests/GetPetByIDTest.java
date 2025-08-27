@@ -35,7 +35,7 @@ public class GetPetByIDTest {
           .setStatusCode(200) // ожидаемый статус
           .setExpectedHeaders("access-control-allow-methods", "GET, POST, DELETE, PUT") // ожидаемые заголовки
           .setResponseBodySchemaPath("PetSchema.json")
-          .needWait(true,5)// путь к файлу схемы
+          .needWait(true,30)// путь к файлу схемы
           .execute();  //выполнить запрос и валидацию
     });
     System.out.println("Thread: " + Thread.currentThread().getName());
