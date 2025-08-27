@@ -6,8 +6,6 @@ timeout(1200){
     node("maven") {
         try {
             def base_url = params.base_url
-//             def chatId = params.chat_id
-//             def botToken = params.bot_token
 
             stage("Prepare Allure results") {
                 sh "rm -rf allure-results || true"
@@ -24,11 +22,6 @@ timeout(1200){
                 }
             }
 
-//             stage("Debug allure mount") {
-//                 sh "ls -la /home/jenkins/workspace/rest-test-runner/allure-results || true"
-//                 sh "ls -la allure-results || true"
-//             }
-
             stage("Allure report publisher") {
                 allure([
                         includeProperties: false,
@@ -43,9 +36,6 @@ timeout(1200){
                 def jsonLines = readFile "allure-report/widgets/summary.json"
                 slurped = new JsonSlurperClassic().parseText(jsonLines)
 
-//                 slurped.each{k, v ->
-//                     testsStatistics[k] =v
-//                 }
                 sh "echo $slurped"
             }
 

@@ -1,6 +1,7 @@
 package guice;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
 import com.google.inject.name.Names;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import factory.ApiFactory;
@@ -22,7 +23,8 @@ public class PipelineModule extends AbstractModule {
     for (String apiName : apiNames) {
       bind(IRequestPipeline.class)
           .annotatedWith(Names.named(apiName))
-          .toProvider(() -> new RequestPipeline(ApiFactory.create(apiName)));
+          .toProvider(() -> new RequestPipeline(ApiFactory.create(apiName)))
+          .in(Scopes.NO_SCOPE);
     }
   }
 }
