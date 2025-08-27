@@ -10,6 +10,7 @@ timeout(1200){
             def botToken = params.bot_token
 
             stage("Prepare Allure results") {
+                sh "rm -rf allure-results || true"
                 sh "mkdir -p allure-results"
             }
             stage("Running rest Automation") {
@@ -23,10 +24,10 @@ timeout(1200){
                 }
             }
 
-            stage("Debug allure mount") {
-                sh "ls -la /home/jenkins/workspace/rest-test-runner/allure-results || true"
-                sh "ls -la allure-results || true"
-            }
+//             stage("Debug allure mount") {
+//                 sh "ls -la /home/jenkins/workspace/rest-test-runner/allure-results || true"
+//                 sh "ls -la allure-results || true"
+//             }
 
             stage("Allure report publisher") {
                 allure([
@@ -49,23 +50,25 @@ timeout(1200){
             }
 
 
-//             stage("Telegram notification") {
-//                 def message = """=============REST TESTS RESULT ================
-//                 base_url: $base_url
-//                 """
-//
-//                 testsStatistics.each{k,v ->
-//                     message += "\t\t$k: $v\n"
-//                 }
-//                 withCredentials([string(credentialsId: 'chat_id', variable: 'chatId'), string(credentialsId: 'bot_token',variable: 'botToken')]){
-//                     sh """
-//                     curl -X POST \
-//                     -H 'Content-Type: application/json' \
-//                     -d '{"chat_id": "$chatId", "text": "$message"}' \
-//                     "https://api.telegram.org/bot$botToken/sendMessage"
-//                     """
-//                 }
-            //}
+            stage("Telegram notification") {
+                def message = """=============REST TESTS RESULT ================
+                base_url: $base_url
+                """
+
+                testsStatistics.each{k,v ->
+                    message += "\t\t$k: $v\n"
+
+                 sh "echo $message"
+                }
+                withCredentials([string(credentialsId: 'chat_id', variable: 'chatId'), string(credentialsId: 'bot_token',variable: 'botToken')]){
+                    sh """
+                    curl -X POST \
+                    -H 'Content-Type: application/json' \
+                    -d '{"chat_id": "$chatId", "text": "$message"}' \
+                    "https://api.telegram.org/bot$botToken/sendMessage"
+                    """
+                }
+            }
         }
         finally {
             stage("Cleanup") {
