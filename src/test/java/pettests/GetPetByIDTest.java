@@ -34,7 +34,8 @@ public class GetPetByIDTest {
           .shouldValidate(true) // валидация
           .setStatusCode(200) // ожидаемый статус
           .setExpectedHeaders("access-control-allow-methods", "GET, POST, DELETE, PUT") // ожидаемые заголовки
-          .setResponseBodySchemaPath("PetSchema.json") // путь к файлу схемы
+          .setResponseBodySchemaPath("PetSchema.json")
+          .needWait(true,5)// путь к файлу схемы
           .execute();  //выполнить запрос и валидацию
     });
     System.out.println("Thread: " + Thread.currentThread().getName());
