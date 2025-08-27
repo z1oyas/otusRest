@@ -41,7 +41,7 @@ timeout(1200){
 
             stage("Gets statistics from allure artifacts") {
                 def jsonLines = readFile "allure-report/widgets/summary.json"
-                def slurped = new JsonSlurperClassic().parseText(jsonLines)
+                slurped = new JsonSlurperClassic().parseText(jsonLines)
 
 //                 slurped.each{k, v ->
 //                     testsStatistics[k] =v
