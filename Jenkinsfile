@@ -6,8 +6,8 @@ timeout(1200){
     node("maven") {
         try {
             def base_url = params.base_url
-            def chatId = params.chat_id
-            def botToken = params.bot_token
+//             def chatId = params.chat_id
+//             def botToken = params.bot_token
 
             stage("Prepare Allure results") {
                 sh "rm -rf allure-results || true"
@@ -62,12 +62,14 @@ timeout(1200){
                 Total: ${slurped.statistic.total}
                 Duration: ${slurped.time.duration}"""
 
+                sh "echo $messageContent"
+
                 withCredentials([string(credentialsId: 'chat_id', variable: 'chatId'), string(credentialsId: 'bot_token',variable: 'botToken')]){
                     sh """
                     curl -X POST \
                     -H 'Content-Type: application/json' \
-                    -d '{"chat_id": "$chatId", "text": "$messageContent"}' \
-                    "https://api.telegram.org/bot$botToken/sendMessage"
+                    -d '{"chat_id": "${chatId}", "text": "${messageContent}"}' \
+                    "https://api.telegram.org/bot${botToken}/sendMessage"
                     """
                 }
             }
