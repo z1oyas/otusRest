@@ -14,8 +14,11 @@ timeout(1200){
                 sh "mkdir -p allure-results"
             }
             stage("Running rest Automation") {
+                sh "echo 'Current directory: \$PWD'"
+                sh "ls -la \$PWD"
+
                 def status = sh(
-                        script: "docker run --name=rest_tests -e BASE_URL=$base_url --network=host -v /home/jenkins/workspace/rest-test-runner/allure-results:/app/allure-results localhost:5005/rest_tests:latest",
+                        script: "docker run --name=rest_tests -e BASE_URL=$base_url --network=host -v \$PWD/allure-results:/app/allure-results localhost:5005/rest_tests:latest",
                         returnStatus: true
                 )
 
